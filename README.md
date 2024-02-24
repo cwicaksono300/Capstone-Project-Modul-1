@@ -46,3 +46,6 @@ Anda dipersilakan untuk berkontribusi pada proyek ini. Untuk melakukannya, ikuti
 
 **Informasi Kontak**:
 Jika Anda memiliki pertanyaan atau masalah, silakan hubungi Muhamad Cahyo Wicaksono di cwicaksono300@gmail.com.
+
+**Penutup**
+Terima Kasih atas perhatiaan dan minat anda terhadap project capstone saya.
