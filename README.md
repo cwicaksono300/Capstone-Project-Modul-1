@@ -2,7 +2,7 @@
 **Judul**: Repositori untuk Program CRUD untuk Laporan Gudang
 
 **Deskripsi**:
-Program CRUD dibuat untuk mendata kegiatan keluar masuk dalam gudang agar mudah dalam manajemen inventaris gudang. Program ini dapat digunakan oleh staff unit gudang dan staff produksi maupun unit lain yang memerlukan data inventaris gudang. Repositori ini berisi semua kode dan aset yang diperlukan untuk menjalankan proyek.
+enter Program CRUD dibuat untuk mendata kegiatan keluar masuk dalam gudang agar mudah dalam manajemen inventaris gudang. Program ini dapat digunakan oleh staff unit gudang dan staff produksi maupun unit lain yang memerlukan data inventaris gudang. Repositori ini berisi semua kode dan aset yang diperlukan untuk menjalankan proyek.
 
 **Instalasi**:
 Untuk menginstal proyek ini, ikuti langkah-langkah berikut:
