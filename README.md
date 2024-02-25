@@ -9,7 +9,7 @@ Program CRUD dibuat untuk mendata kegiatan keluar masuk dalam gudang agar mudah 
 Untuk menginstal proyek ini, ikuti langkah-langkah berikut:
 1. Salin repositori ini ke komputer Anda:
 ```
-git clone https://github.com/[Nama Pengguna Anda]/[Nama Repositori Anda].git
+git clone https://github.com/cwicaksono300/Capstone-Project-Modul-1
 ```
 2. Jalankan file python:
 ```
