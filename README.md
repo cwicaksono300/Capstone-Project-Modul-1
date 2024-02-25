@@ -22,20 +22,20 @@ Untuk menggunakan proyek ini, ikuti langkah-langkah berikut:
 2. Ikuti petunjuk di layar.
 
 **Fitur**:  
-1. Menu utama
+1. Menu utama  
    Menu pertama yang muncul dan digunakan untuk mengakses sub menu lainnya
-2. Menu Read.
+2. Menu Read  
    Melihat seluruh atau sebagian laporan keluar masuk gudang dan terdapat fitur 
    sort serta mencari kode barang. 
-3. Menu Create
+3. Menu Create  
    Menu untuk membuat laporan baru baik laporan keluar ataupun masuk gudang. Serta 
    membuat pesan untuk staff gudang.
-4. Menu Update
+4. Menu Update  
    Menu untuk mengupdate laporan gudang yang telah terdaftar serta menyelesaikan   
    pesan yang telah dibuat.
-5. Menu Delete
+5. Menu Delete  
    Menghapus laporan yang ada dan mengembalikan data yang telah terhapus
-6. Menu Notice
+6. Menu Notice  
    Menu untuk melihat pesan yang belum terselesaikan dan riwayat pesan yang ada
 
 **Kontribusi**:  
