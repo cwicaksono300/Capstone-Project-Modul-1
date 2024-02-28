@@ -1,3 +1,6 @@
+#Tambah sama validasinya ben
+from datetime import date
+import time
 def main_menu ():
     print("\nSelamat Datang di Gudang Lumajang Agro Lestari")
     print("Main Menu :")
@@ -5,13 +8,14 @@ def main_menu ():
     print("2. Menambah laporan gudang")
     print("3. Update laporan gudang")
     print("4. Menghapus laporan gudang")
-    print(f"5. Notice ({len(notice)})")
+    print(f"5. Pesan ({len(notice)})")
     print("6. Keluar menu")
     program = input("Pilih opsi menu : ")
     program = cekprogram(program)
     if program == 6:
-        return print("Terima Kasih")
-        exit()
+        print("Terima Kasih")
+        time.sleep(3)
+        return exit()
     elif program==1:
         return menu_read()
     elif program==2:
@@ -29,17 +33,39 @@ def main_menu ():
 def menu_pesan():
     print("\nMenu :")
     print(f"1. Pesan Belum Terselesaikan ({len(notice)})")
-    print("2. Riwayat Pesan")
-    print("3. Menu Utama")
+    print("2. Selesaikan Pesan")
+    print("3. Riwayat Pesan")
+    print("4. Menu Utama")
     program_pesan = input("Pilih opsi menu : ")
     program_pesan = cekprogram(program_pesan)
     if program_pesan == 1:
+        print("\nPesan Belum Terselesaikan :")
         for i in range(len(notice)):
             print(f"{i+1}. {notice[i]}")
     elif program_pesan == 2:
+        print("\nPesan Belum Terselesaikan :")
+        for i in range(len(notice)):
+            print(f"{i+1}. {notice[i]}")
+        pesan = input("Pilih nomor pesan yang telah terselesaikan : ")
+        pesan = cekprogram(pesan)
+        print(f"\n{pesan}. {notice[pesan-1]}")
+        konfirmasi = input("Apakah pesan ini sudah terselesaikan (Y/N)? ")
+        if(konfirmasi == "Y"):
+            log_notice.append(notice[pesan-1])
+            notice.pop(pesan-1)
+            print("Pesan terselesaikan sudah dipindah ke riwayat pesan!")
+            return menu_pesan()
+        elif(konfirmasi =="N"):
+            print("Pesan tidak jadi terselesaikan, kembali ke menu.")
+            return menu_pesan()
+        else:
+            print("Konfirmasi yang anda masukkan salah, coba lagi!")
+            return menu_pesan()
+    elif program_pesan == 3:
+        print("\nRiwayat Pesan :")
         for i in range(len(log_notice)):
             print(f"{i+1}. {log_notice[i]}")
-    elif program_pesan == 3:
+    elif program_pesan == 4:
         return main_menu()
     else:
         print("Opsi yang anda masukkan tidak ada, kembali ke menu.")
@@ -49,7 +75,7 @@ def menu_pesan():
 def menu_delete():
     print("\nMenu :")
     print("1. Delete Laporan Gudang")
-    print("2. Recovery Laporan Gudang ")
+    print("2. Recovery Laporan Gudang")
     print("3. Menu Utama")
     program_delete = input("Pilih opsi menu : ")
     program_delete = cekprogram(program_delete)
@@ -62,47 +88,26 @@ def menu_delete():
     else:
         print("Opsi yang anda masukkan tidak ada, kembali ke menu.")
         return menu_delete()
-    return menu_delete()
 
 def menu_update():
     print("\nMenu :")
     print("1. Update Laporan Gudang")
-    print("2. Selesaikan Notice")
-    print("3. Menu Utama")
+    print("2. Menu Utama")
     program_update = input("Pilih opsi menu : ")
     program_update = cekprogram(program_update)
     if program_update == 1:
         return update()
     elif program_update == 2:
-        for i in range(len(notice)):
-            print(f"{i+1}. {notice[i]}")
-        pesan = input("Pilih nomor pesan yang telah terselesaikan : ")
-        pesan = cekprogram(pesan)
-        print(notice[pesan-1])
-        konfirmasi = input("Apakah pesan ini sudah terselesaikan (Y/N)? ")
-        if(konfirmasi == "Y"):
-            log_notice.append(notice[pesan-1])
-            notice.pop(pesan-1)
-            print("Pesan terselesaikan sudah dipindah ke riwayat pesan!")
-        elif(konfirmasi =="N"):
-            print("Pesan tidak jadi terselesaikan, kembali ke menu.")
-            return menu_update()
-        else:
-            print("Konfirmasi yang anda masukkan salah, coba lagi!")
-            return menu_update()
-    elif program_update == 3:
         return main_menu()
     else:
         print("Opsi yang anda masukkan tidak ada, kembali ke menu.")
         return menu_update()
-    return menu_update
-
 
 def menu_create():
     print("\nMenu :")
     print("1. Laporan Barang Masuk")
     print("2. Laporan Barang Keluar")
-    print("3. Buat Notice")
+    print("3. Buat Pesan")
     print("4. Menu Utama")
     program_create = input("Pilih opsi menu : ")
     program_create = cekprogram(program_create)
@@ -124,7 +129,6 @@ def menu_create():
     else:
         print("Opsi yang anda masukkan tidak ada, kembali ke menu.")
         return menu_create()
-    return menu_create()
 
 def menu_read():
     print("\nMenu :")
@@ -143,13 +147,13 @@ def menu_read():
         for i in range(len(data_gudang)):
             if(data_gudang[i]["ID"][0]=="M"):
                 data_masuk.append(data_gudang[i])
-        read(data_masuk)
+        read(data_masuk,"NA")
     elif program_read == 3:
         data_keluar=[]
         for i in range(len(data_gudang)):
             if(data_gudang[i]["ID"][0]=="K"):
                 data_keluar.append(data_gudang[i])
-        read(data_keluar)
+        read(data_keluar,"NA")
     elif program_read == 4:
         return menu_sort(data_gudang)
     elif program_read == 5:
@@ -193,18 +197,21 @@ def menu_sort(data_gudang):
     return menu_read()
 
 def recovery():
-    read(data_hapus)
-    recov = input("Pilih ID laporan : ")
+    read(data_hapus,"Recov")
+    recov = input("Pilih NO laporan : ")
+    recov = cekprogram(recov)
     cari = []
-    cari = list(filter(lambda kode: kode['ID'] == recov, data_hapus))
+    cari = list(filter(lambda kode: kode['NO'] == recov, data_hapus))
     if cari == []:
-        print("ID laporan belum terdaftar.")
+        print("NO laporan belum terdaftar.")
         return menu_delete()
     else:
         index = data_hapus.index(cari[0])
-        read(cari)
+        read(cari,"Recov")
         konfirmasi = input(f"Apakah anda yakin ingin mengembalikan laporan {recov} (Y/N) : ")
         if(konfirmasi == "Y"):
+            data_hapus[index].pop("NO")
+            data_hapus[index].pop("Tanggal Hapus")
             data_gudang.append(data_hapus[index])
             data_hapus.pop(index)
             cari = []
@@ -232,11 +239,15 @@ def delete():
         print("ID laporan belum terdaftar.")
         return menu_delete()
     else:
+        recov = [{}]
         index = data_gudang.index(cari[0])
+        recov[0]["NO"]=data_hapus[-1]["NO"]+1
+        recov[0]["Tanggal Hapus"]= date.today()
         read(cari)
         konfirmasi = input(f"Apakah anda yakin ingin menghapus laporan {delet} (Y/N) : ")
         if(konfirmasi == "Y"):
-            data_hapus.append(data_gudang[index])
+            recov[0].update(data_gudang[index])
+            data_hapus.append(recov[0])
             data_gudang.pop(index)
             cari = []
             cari = list(filter(lambda kode: kode['ID'] == delet, data_gudang))
@@ -267,6 +278,8 @@ def update():
         read(cari)
         print("Silahkan pilih kolom yang ingin diupdate :")
         for i in data_gudang[0]:
+            if i == "ID":
+                continue
             print(f"-{i}")
         keys = input("Pilih kolom : ")
         flag = False
@@ -275,24 +288,80 @@ def update():
                 flag = True
                 break
         if(flag == True):
-            print(f"Nilai Awal : {data_gudang[index][keys]}")
-            value = input("Nilai Baru : ")
-            konfirmasi = input(f"Apakah anda yakin mengganti {data_gudang[index][keys]} menjadi {value} (Y/N)? ")
-            if(konfirmasi == "Y"):
-                data_gudang[index][keys] = value
-                if(data_gudang[index][keys]==value):
-                    print("Laporan telah berhasil di update.")
-                    print(data_gudang[index])
+            if(keys == "Kode Barang"):
+                print(f"Nilai Awal : {data_gudang[index][keys]}")
+                value = input("Nilai Baru : ")
+                barang = []
+                barang = list(filter(lambda kode: kode['Kode Barang'] == value, data_produk))
+                if(barang == []):
+                    print("Kode barang belum terdaftar, silahkan isi informasi berikut :")
+                    nama_barang = input("Masukkan nama barang : ")
+                    satuan = input("Masukkan satuan barang : ")
+                elif(barang != []):
+                    nama_barang = barang[0]["Nama"]
+                    satuan = barang[0]["Satuan"]
+                konfirmasi = input(f"Apakah anda yakin mengganti {data_gudang[index][keys]} menjadi {value} (Y/N)? ")
+                if(konfirmasi == "Y"):
+                    data_gudang[index]["Kode Barang"] = value
+                    data_gudang[index]["Nama"] = nama_barang
+                    data_gudang[index]["Satuan"] = satuan
+                    if(data_gudang[index][keys]==value):
+                        print("Laporan telah berhasil di update.")
+                        read([data_gudang[index]])
+                        return menu_update()
+                    else:
+                        print("Maaf terjadi error, coba beberapa saat lagi!")
+                        return menu_update()
+                elif(konfirmasi =="N"):
+                    print("Laporan tidak jadi diupdate, kembali ke menu.")
                     return menu_update()
                 else:
-                    print("Maaf terjadi error, coba beberapa saat lagi!")
+                    print("Konfirmasi yang anda masukkan salah, coba lagi!")
+                    return update()
+            elif(keys == "Tanggal"):
+                print(f"Nilai Awal : {data_gudang[index][keys]}")
+                tahun = input("Tahun (yyyy) : ")
+                tahun = cekprogram(tahun)
+                bulan = input("Bulan (mm): ")
+                bulan = cekprogram(bulan)
+                hari = input("Hari (dd): ")
+                hari = cekprogram(hari)
+                value = date(tahun,bulan,hari)
+                konfirmasi = input(f"Apakah anda yakin mengganti {data_gudang[index][keys]} menjadi {value} (Y/N)? ")
+                if(konfirmasi == "Y"):
+                    data_gudang[index][keys] = value
+                    if(data_gudang[index][keys]==value):
+                        print("Laporan telah berhasil di update.")
+                        read([data_gudang[index]])
+                        return menu_update()
+                    else:
+                        print("Maaf terjadi error, coba beberapa saat lagi!")
+                        return menu_update()
+                elif(konfirmasi =="N"):
+                    print("Laporan tidak jadi diupdate, kembali ke menu.")
                     return menu_update()
-            elif(konfirmasi =="N"):
-                print("Laporan tidak jadi diupdate, kembali ke menu.")
-                return menu_update()
-            else:
-                print("Konfirmasi yang anda masukkan salah, coba lagi!")
-                return menu_update()
+                else:
+                    print("Konfirmasi yang anda masukkan salah, coba lagi!")
+                    return menu_update()
+            elif(keys != "Tanggal" or keys != "Kode Barang"):
+                print(f"Nilai Awal : {data_gudang[index][keys]}")
+                value = input("Nilai Baru : ")
+                konfirmasi = input(f"Apakah anda yakin mengganti {data_gudang[index][keys]} menjadi {value} (Y/N)? ")
+                if(konfirmasi == "Y"):
+                    data_gudang[index][keys] = value
+                    if(data_gudang[index][keys]==value):
+                        print("Laporan telah berhasil di update.")
+                        read([data_gudang[index]])
+                        return menu_update()
+                    else:
+                        print("Maaf terjadi error, coba beberapa saat lagi!")
+                        return menu_update()
+                elif(konfirmasi =="N"):
+                    print("Laporan tidak jadi diupdate, kembali ke menu.")
+                    return menu_update()
+                else:
+                    print("Konfirmasi yang anda masukkan salah, coba lagi!")
+                    return menu_update()
         elif(flag == False):
             print("Kolom yang anda masukkan salah, coba lagi!")
             return menu_update()
@@ -307,51 +376,113 @@ def create(code):
         cari = list(filter(lambda kode: kode['ID'] == masuk, data_gudang))
         if cari != []:
             print("ID laporan sudah terdaftar.")
-            return menu_create()
-        else:
-            kode_barang = input("Masukkan kode barang : ")
-            nama_barang = input("Masukkan nama barang : ")
-            tanggal = input("Masukkan tanggal : ")
-            jumlah = input("Masukkan jumlah barang : ")
-            satuan = input("Masukkan satuan barang : ")
-            data_masuk = [{"ID" : masuk,"Kode Barang":kode_barang,"Nama":nama_barang,"Tanggal Masuk":tanggal,"Jumlah" : jumlah,"Satuan" : satuan}]
-            read(data_masuk)
-            konfirmasi = input(f"Apakah anda yakin menyimpan laporan di atas (Y/N)? ")
-            if(konfirmasi == "Y"):
-                data_gudang.append(data_masuk[0])
-                if(data_gudang[-1]== data_masuk[0]):
-                    print("Laporan telah berhasil disimpan.")
-                    read(data_gudang)
-                    return menu_create()
-                else:
-                    print("Maaf terjadi error, coba beberapa saat lagi!")
-                    return menu_create()
-            elif(konfirmasi =="N"):
-                print("Laporan tidak jadi disimpan, kembali ke menu.")
+            tindih = input("Apakah anda ingin menimpa laporan yang ada (Y/N)? ").upper()
+            if(tindih == "N"):
                 return menu_create()
+            elif(tindih == "Y"):
+                index = data_gudang.index(cari[0])
             else:
                 print("Konfirmasi yang anda masukkan salah, coba lagi!")
+                return create(code)
+        kode_barang = input("Masukkan kode barang : ")
+        barang = []
+        barang = list(filter(lambda kode: kode['Kode Barang'] == kode_barang, data_produk))
+        if(barang == []):
+            print("Kode barang belum terdaftar, silahkan isi informasi berikut :")
+            nama_barang = input("Masukkan nama barang : ")
+            jumlah = input("Masukkan jumlah barang : ")
+            satuan = input("Masukkan satuan barang : ")
+        elif(barang != []):
+            nama_barang = barang[0]["Nama"]
+            jumlah = input("Masukkan jumlah barang : ")
+            satuan = barang[0]["Satuan"]
+        data_masuk = [{"ID" : masuk,"Kode Barang":kode_barang,"Nama":nama_barang,"Tanggal":date.today(),"Jumlah" : jumlah,"Satuan" : satuan}]
+        read(data_masuk)
+        konfirmasi = input(f"Apakah anda yakin menyimpan laporan di atas (Y/N)? ")
+        if(konfirmasi == "Y" and tindih == "Y"):
+            data_gudang[index]=data_masuk[0]
+            read(data_gudang)
+            return menu_create()
+        elif(konfirmasi == "Y"):
+            data_gudang.append(data_masuk[0])
+            if(data_gudang[-1]== data_masuk[0]):
+                print("Laporan telah berhasil disimpan.")
+                read(data_gudang)
                 return menu_create()
-
-def read(data_gudang):
-    print("\nData Gudang Lumajang Agro Lestari\n")
-    print("ID\t\t|Kode Barang\t\t|Nama Barang\t\t|Tanggal Masuk\t\t|Jumlah\t\t|Satuan")
-    for i in range(len(data_gudang)):
-        for j in data_gudang[i]:
-            if(j=="Kode Barang"):
-                print(data_gudang[i][j],end="\t\t\t")
-            elif(j=="Nama"):
-                if(len(data_gudang[i][j])<=7):
-                    print(data_gudang[i][j],end="\t\t\t")
-                elif(len(data_gudang[i][j])<=14):
-                    print(data_gudang[i][j],end="\t\t")
-                else:
-                    print(data_gudang[i][j],end="\t")
             else:
-                print(data_gudang[i][j],end="\t\t")
-        print("")
+                print("Maaf terjadi error, coba beberapa saat lagi!")
+                return create(code)
+        elif(konfirmasi =="N"):
+            print("Laporan tidak jadi disimpan, kembali ke menu.")
+            return menu_create()
+        else:
+            print("Konfirmasi yang anda masukkan salah, coba lagi!")
+            return create(code)
 
-def cekprogram(program):
+def read(data_gudang,kode = "ALL"):
+    if kode == "ALL":
+        print("\nData Gudang Lumajang Agro Lestari\n")
+        print("ID\t|Kode Barang\t|Nama Barang\t\t|Tanggal\t|Jumlah\t|Satuan\t|Kategori")
+        for i in range(len(data_gudang)):
+            for j in data_gudang[i]:
+                if(j=="Kode Barang"):
+                    print(data_gudang[i][j],end="\t\t")
+                elif(j=="ID" or j=="Tanggal" or j=="Jumlah" or j=="Satuan"):
+                    print(data_gudang[i][j],end="\t")
+                elif(j=="Nama"):
+                    if(len(data_gudang[i][j])<=7):
+                        print(data_gudang[i][j],end="\t\t\t")
+                    elif(len(data_gudang[i][j])<=15):
+                        print(data_gudang[i][j],end="\t\t")
+                    else:
+                        print(data_gudang[i][j],end="\t")
+            if(data_gudang[i]["ID"][0]=="K"):
+                print("Keluar")
+            if(data_gudang[i]["ID"][0]=="M"):
+                print("Masuk")
+            print("")
+    elif kode == "Recov":
+        print("\nData Gudang Lumajang Agro Lestari\n")
+        print("NO\t|Tanggal Hapus\t|ID\t|Kode Barang\t|Nama Barang\t\t|Tanggal\t|Jumlah\t|Satuan\t|Kategori")
+        for i in range(len(data_gudang)):
+            for j in data_gudang[i]:
+                if(j=="Kode Barang"):
+                    print(data_gudang[i][j],end="\t\t")
+                elif(j=="ID" or j=="Tanggal" or j=="Jumlah" or j=="Satuan" or j=="NO" or j=="Tanggal Hapus"):
+                    print(data_gudang[i][j],end="\t")
+                elif(j=="Nama"):
+                    if(len(data_gudang[i][j])<=7):
+                        print(data_gudang[i][j],end="\t\t\t")
+                    elif(len(data_gudang[i][j])<=15):
+                        print(data_gudang[i][j],end="\t\t")
+                    else:
+                        print(data_gudang[i][j],end="\t")
+            if(data_gudang[i]["ID"][0]=="K"):
+                print("Keluar")
+            if(data_gudang[i]["ID"][0]=="M"):
+                print("Masuk")
+            print("")
+    elif kode != "ALL":
+        print("\nData Gudang Lumajang Agro Lestari\n")
+        print("ID\t|Kode Barang\t|Nama Barang\t\t|Tanggal\t|Jumlah\t|Satuan")
+        for i in range(len(data_gudang)):
+            for j in data_gudang[i]:
+                if(j=="Kode Barang"):
+                    print(data_gudang[i][j],end="\t\t")
+                elif(j=="ID" or j=="Tanggal" or j=="Jumlah"):
+                    print(data_gudang[i][j],end="\t")
+                elif(j=="Nama"):
+                    if(len(data_gudang[i][j])<=7):
+                        print(data_gudang[i][j],end="\t\t\t")
+                    elif(len(data_gudang[i][j])<=15):
+                        print(data_gudang[i][j],end="\t\t")
+                    else:
+                        print(data_gudang[i][j],end="\t")
+                else:
+                    print(data_gudang[i][j],end="\t\t")
+            print("")
+
+def cekprogram(program): #Bisa ditambahin validasi lain
     while program.isnumeric()==False:
         print("Masukkan opsi menu yang tepat!")
         program = input("Masukkan opsi menu : ")
@@ -359,17 +490,26 @@ def cekprogram(program):
     return program
 
 data_gudang = [
-    {"ID" : "K01","Kode Barang":"PD01","Nama":"Sirup Telang","Tanggal Masuk":"04-02-24","Jumlah" : 20,"Satuan" : "Botol"},
-    {"ID" : "K02","Kode Barang":"PD02","Nama":"Sirup Lemon","Tanggal Masuk":"05-02-24","Jumlah" : 20,"Satuan" : "Botol"},
-    {"ID" : "K03","Kode Barang":"PD03","Nama":"Keripik Tempe Sagu","Tanggal Masuk":"06-02-24","Jumlah" : 50,"Satuan" : "Pcs"},
-    {"ID" : "M01","Kode Barang":"BM01","Nama":"Lemon","Tanggal Masuk":"31-01-24","Jumlah" : 10,"Satuan" : "KG"},
-    {"ID" : "M02","Kode Barang":"BM02","Nama":"Bunga Telang","Tanggal Masuk":"31-01-24","Jumlah" : 2,"Satuan" : "KG"},
-    {"ID" : "M03","Kode Barang":"BB01","Nama":"Botol Plastik","Tanggal Masuk":"08-02-24","Jumlah" : 40,"Satuan" : "Buah"}
+    {"ID" : "K01","Kode Barang":"PD01","Nama":"Sirup Telang","Tanggal": date(2024,2,4),"Jumlah" : 20,"Satuan" : "Botol"},
+    {"ID" : "K02","Kode Barang":"PD02","Nama":"Sirup Lemon","Tanggal":date(2024,2,5),"Jumlah" : 20,"Satuan" : "Botol"},
+    {"ID" : "K03","Kode Barang":"PD03","Nama":"Keripik Tempe Sagu","Tanggal":date(2024,2,6),"Jumlah" : 50,"Satuan" : "Pcs"},
+    {"ID" : "M01","Kode Barang":"BM01","Nama":"Lemon","Tanggal":date(2024,1,24),"Jumlah" : 10,"Satuan" : "KG"},
+    {"ID" : "M02","Kode Barang":"BM02","Nama":"Bunga Telang","Tanggal":date(2024,1,31),"Jumlah" : 2,"Satuan" : "KG"},
+    {"ID" : "M03","Kode Barang":"BB01","Nama":"Botol Plastik","Tanggal":date(2024,2,8),"Jumlah" : 40,"Satuan" : "Buah"}
+]
+
+data_produk = [
+    {"Kode Barang":"PD01","Nama":"Sirup Telang","Kategori" : "Produk", "Satuan" : "Botol", "Harga" : 20000, "Stok" : 30 },
+    {"Kode Barang":"PD02","Nama":"Sirup Lemon","Kategori" : "Produk", "Satuan" : "Botol", "Harga" : 25000, "Stok" : 30 },
+    {"Kode Barang":"PD03","Nama":"Keripik Tempe Sagu","Kategori" : "Produk", "Satuan" : "Pcs", "Harga" : 10000, "Stok" : 50 },
+    {"Kode Barang":"BM01","Nama":"Lemon","Kategori" : "Bahan Mentah", "Satuan" : "KG", "Harga" : 10000, "Stok" : 5 },
+    {"Kode Barang":"BM02","Nama":"Bunga Telang","Kategori" : "Bahan Mentah", "Satuan" : "KG", "Harga" : 20000, "Stok" : 10 },
+    {"Kode Barang":"BB01","Nama":"Botol Plastik","Kategori" : "Bahan Baku", "Satuan" : "Buah", "Harga" : 500, "Stok" : 100 }
 ]
 
 data_hapus = [
-    {"ID" : "K04","Kode Barang":"PD04","Nama":" Air Lemon Sereh","Tanggal Masuk":"10-02-24","Jumlah" : 40,"Satuan" : "Botol"},
-    {"ID" : "M04","Kode Barang":"BB02","Nama":"Batang Serai","Tanggal Masuk":"09-02-24","Jumlah" : 5,"Satuan" : "KG"}
+    {"NO":1,"Tanggal Hapus" : date(2024,2,25),"ID" : "K04","Kode Barang":"PD04","Nama":"Air Lemon Sereh","Tanggal":"10-02-24","Jumlah" : 40,"Satuan" : "Botol"},
+    {"NO":2,"Tanggal Hapus" : date(2024,2,25),"ID" : "M04","Kode Barang":"BB02","Nama":"Batang Serai","Tanggal":"09-02-24","Jumlah" : 5,"Satuan" : "KG"}
 ]
 
 notice = ["Nanti ada Barang Masuk dari suplier","Stok produk sudah habis","Siapkan Lemon 2 KG untuk produksi"]
