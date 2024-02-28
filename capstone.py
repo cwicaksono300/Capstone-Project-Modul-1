@@ -173,7 +173,7 @@ def menu_sort(data_gudang):
     print("\nUrutkan Data berdasarkan Kolom :")
     print("1. Kode Barang")
     print("2. Nama Barang")
-    print("3. Tanggal Masuk")
+    print("3. Tanggal")
     print("4. Jumlah Barang")
     program_sort = input("Pilih opsi yang tersedia : ")
     program_sort = cekprogram(program_sort)
