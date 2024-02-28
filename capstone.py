@@ -185,7 +185,7 @@ def menu_sort(data_gudang):
         urut = sorted(data_gudang, key=lambda d: d['Nama'])
         read(urut)
     elif program_sort == 3:
-        urut = sorted(data_gudang, key=lambda d: d['Tanggal Masuk'])
+        urut = sorted(data_gudang, key=lambda d: d['Tanggal'])
         read(urut)
     elif program_sort == 4:
         urut = sorted(data_gudang, key=lambda d: d['Jumlah'])
@@ -373,6 +373,7 @@ def create(code):
         masuk = code+masuk
         cari = []
         cari = list(filter(lambda kode: kode['ID'] == masuk, data_gudang))
+        tindih="N"
         if cari != []:
             print("ID laporan sudah terdaftar.")
             tindih = input("Apakah anda ingin menimpa laporan yang ada (Y/N)? ").upper()
