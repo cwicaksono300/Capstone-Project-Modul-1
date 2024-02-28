@@ -1,4 +1,3 @@
-#Tambah sama validasinya ben
 from datetime import date
 import time
 def main_menu ():
