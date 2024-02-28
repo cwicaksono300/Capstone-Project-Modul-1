@@ -48,7 +48,8 @@ def menu_pesan():
         pesan = input("Pilih nomor pesan yang telah terselesaikan : ")
         pesan = cekprogram(pesan)
         print(f"\n{pesan}. {notice[pesan-1]}")
-        konfirmasi = input("Apakah pesan ini sudah terselesaikan (Y/N)? ")
+        konfirmasi = input("Apakah pesan ini sudah terselesaikan (Y/N)? ").upper()
+        konfirmasi = cekkonfirmasi(konfirmasi)
         if(konfirmasi == "Y"):
             log_notice.append(notice[pesan-1])
             notice.pop(pesan-1)
@@ -56,9 +57,6 @@ def menu_pesan():
             return menu_pesan()
         elif(konfirmasi =="N"):
             print("Pesan tidak jadi terselesaikan, kembali ke menu.")
-            return menu_pesan()
-        else:
-            print("Konfirmasi yang anda masukkan salah, coba lagi!")
             return menu_pesan()
     elif program_pesan == 3:
         print("\nRiwayat Pesan :")
@@ -207,7 +205,8 @@ def recovery():
     else:
         index = data_hapus.index(cari[0])
         read(cari,"Recov")
-        konfirmasi = input(f"Apakah anda yakin ingin mengembalikan laporan {recov} (Y/N) : ")
+        konfirmasi = input(f"Apakah anda yakin ingin mengembalikan laporan {recov} (Y/N) : ").upper()
+        konfirmasi = cekkonfirmasi(konfirmasi)
         if(konfirmasi == "Y"):
             data_hapus[index].pop("NO")
             data_hapus[index].pop("Tanggal Hapus")
@@ -225,9 +224,6 @@ def recovery():
         elif(konfirmasi =="N"):
             print("Laporan tidak jadi dikembalikan, kembali ke menu.")
             return menu_delete()
-        else:
-            print("Konfirmasi yang anda masukkan salah, coba lagi!")
-            return menu_delete()
 
 def delete():
     read(data_gudang)
@@ -243,7 +239,8 @@ def delete():
         recov[0]["NO"]=data_hapus[-1]["NO"]+1
         recov[0]["Tanggal Hapus"]= date.today()
         read(cari)
-        konfirmasi = input(f"Apakah anda yakin ingin menghapus laporan {delet} (Y/N) : ")
+        konfirmasi = input(f"Apakah anda yakin ingin menghapus laporan {delet} (Y/N) : ").upper()
+        konfirmasi = cekkonfirmasi(konfirmasi)
         if(konfirmasi == "Y"):
             recov[0].update(data_gudang[index])
             data_hapus.append(recov[0])
@@ -259,9 +256,6 @@ def delete():
                 return menu_delete()
         elif(konfirmasi =="N"):
             print("Laporan tidak jadi dihapus, kembali ke menu.")
-            return menu_delete()
-        else:
-            print("Konfirmasi yang anda masukkan salah, coba lagi!")
             return menu_delete()
 
 def update():
@@ -299,7 +293,8 @@ def update():
                 elif(barang != []):
                     nama_barang = barang[0]["Nama"]
                     satuan = barang[0]["Satuan"]
-                konfirmasi = input(f"Apakah anda yakin mengganti {data_gudang[index][keys]} menjadi {value} (Y/N)? ")
+                konfirmasi = input(f"Apakah anda yakin mengganti {data_gudang[index][keys]} menjadi {value} (Y/N)? ").upper()
+                konfirmasi = cekkonfirmasi(konfirmasi)
                 if(konfirmasi == "Y"):
                     data_gudang[index]["Kode Barang"] = value
                     data_gudang[index]["Nama"] = nama_barang
@@ -314,9 +309,6 @@ def update():
                 elif(konfirmasi =="N"):
                     print("Laporan tidak jadi diupdate, kembali ke menu.")
                     return menu_update()
-                else:
-                    print("Konfirmasi yang anda masukkan salah, coba lagi!")
-                    return update()
             elif(keys == "Tanggal"):
                 print(f"Nilai Awal : {data_gudang[index][keys]}")
                 tahun = input("Tahun (yyyy) : ")
@@ -326,7 +318,8 @@ def update():
                 hari = input("Hari (dd): ")
                 hari = cekprogram(hari)
                 value = date(tahun,bulan,hari)
-                konfirmasi = input(f"Apakah anda yakin mengganti {data_gudang[index][keys]} menjadi {value} (Y/N)? ")
+                konfirmasi = input(f"Apakah anda yakin mengganti {data_gudang[index][keys]} menjadi {value} (Y/N)? ").upper()
+                konfirmasi = cekkonfirmasi(konfirmasi)
                 if(konfirmasi == "Y"):
                     data_gudang[index][keys] = value
                     if(data_gudang[index][keys]==value):
@@ -338,14 +331,12 @@ def update():
                         return menu_update()
                 elif(konfirmasi =="N"):
                     print("Laporan tidak jadi diupdate, kembali ke menu.")
-                    return menu_update()
-                else:
-                    print("Konfirmasi yang anda masukkan salah, coba lagi!")
                     return menu_update()
             elif(keys != "Tanggal" or keys != "Kode Barang"):
                 print(f"Nilai Awal : {data_gudang[index][keys]}")
                 value = input("Nilai Baru : ")
-                konfirmasi = input(f"Apakah anda yakin mengganti {data_gudang[index][keys]} menjadi {value} (Y/N)? ")
+                konfirmasi = input(f"Apakah anda yakin mengganti {data_gudang[index][keys]} menjadi {value} (Y/N)? ").upper()
+                konfirmasi = cekkonfirmasi(konfirmasi)
                 if(konfirmasi == "Y"):
                     data_gudang[index][keys] = value
                     if(data_gudang[index][keys]==value):
@@ -357,9 +348,6 @@ def update():
                         return menu_update()
                 elif(konfirmasi =="N"):
                     print("Laporan tidak jadi diupdate, kembali ke menu.")
-                    return menu_update()
-                else:
-                    print("Konfirmasi yang anda masukkan salah, coba lagi!")
                     return menu_update()
         elif(flag == False):
             print("Kolom yang anda masukkan salah, coba lagi!")
@@ -377,7 +365,9 @@ def create(code):
         if cari != []:
             print("ID laporan sudah terdaftar.")
             tindih = input("Apakah anda ingin menimpa laporan yang ada (Y/N)? ").upper()
+            tindih = cekkonfirmasi(tindih)
             if(tindih == "N"):
+                print("Laporan tidak jadi ditambah, kembali ke menu.")
                 return menu_create()
             elif(tindih == "Y"):
                 index = data_gudang.index(cari[0])
@@ -398,7 +388,8 @@ def create(code):
             satuan = barang[0]["Satuan"]
         data_masuk = [{"ID" : masuk,"Kode Barang":kode_barang,"Nama":nama_barang,"Tanggal":date.today(),"Jumlah" : jumlah,"Satuan" : satuan}]
         read(data_masuk)
-        konfirmasi = input(f"Apakah anda yakin menyimpan laporan di atas (Y/N)? ")
+        konfirmasi = input(f"Apakah anda yakin menyimpan laporan di atas (Y/N)? ").upper()
+        konfirmasi = cekkonfirmasi(konfirmasi)
         if(konfirmasi == "Y" and tindih == "Y"):
             data_gudang[index]=data_masuk[0]
             read(data_gudang)
@@ -415,9 +406,6 @@ def create(code):
         elif(konfirmasi =="N"):
             print("Laporan tidak jadi disimpan, kembali ke menu.")
             return menu_create()
-        else:
-            print("Konfirmasi yang anda masukkan salah, coba lagi!")
-            return create(code)
 
 def read(data_gudang,kode = "ALL"):
     if kode == "ALL":
@@ -481,6 +469,13 @@ def read(data_gudang,kode = "ALL"):
                 else:
                     print(data_gudang[i][j],end="\t\t")
             print("")
+
+def cekkonfirmasi (konfirmasi):
+    while konfirmasi != "Y" and konfirmasi != "N":
+        print("Masukkan opsi menu yang tepat! (Y/N)")
+        konfirmasi = input("Masukkan konfirmasi (Y/N) : ").upper()
+    return konfirmasi
+
 
 def cekprogram(program): #Bisa ditambahin validasi lain
     while program.isnumeric()==False:
