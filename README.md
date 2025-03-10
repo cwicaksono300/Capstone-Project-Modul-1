@@ -1,4 +1,4 @@
-# Capstone-Project-Modul-1
+# CRUD Program For Inventory Report
 **Judul**:  
 Repositori untuk Program CRUD untuk Laporan Gudang
 
